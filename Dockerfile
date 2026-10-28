@@ -1,8 +1,6 @@
 # Use Python 3.12 slim image for smaller size
 FROM python:3.12-slim
 
-# Note: .dockerignore is symlinked to .gitignore for unified exclusion rules
-
 # Set working directory
 WORKDIR /app
 
@@ -32,8 +30,8 @@ COPY pytest.ini ./
 RUN mkdir -p /root/.garminconnect && \
     chmod 700 /root/.garminconnect
 
-# Expose the application (if needed for network communication)
-# Note: MCP servers typically communicate via stdio, so no port exposure is usually needed
+# Expose the HTTP port. The image defaults to stdio (Claude Desktop, Inspector);
+# set GARMIN_MCP_TRANSPORT=streamable-http to serve over this port (e.g. in k8s).
 # EXPOSE 8000
 
 # Set the entrypoint to run the MCP server
